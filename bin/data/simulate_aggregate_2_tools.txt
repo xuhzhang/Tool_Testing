@@ -1,6 +1,0 @@
-Type	Var_Type	Interval	Raw	New	Fasta	Multiple	Tool	Tool_POS	Tool_REF	Tool_ALT	Tool_Type	Tool_ratio
-Duplication	2bp	29567-29568	CA	CACA	./data/raw_duplication_1_2bp.fa	1	Freebayes	29566	TCAG	TCACAG	TYPE=ins	1.0
-Deletion	2bp	19035-19036	CC	-	./data/raw_deletion_1_2bp.fa	1	Freebayes	19034	GCCTA	GTA	TYPE=del	1.0
-Insertion	2bp	376-377	-	AC	./data/raw_insertion_1_2bp.fa	1	Freebayes	375	GTC	GACTC	TYPE=ins	0.9985163204747775
-Inversion	2bp	13200-13201	CT	AG	./data/raw_inversion_1_2bp.fa	1	Freebayes	13200	CT	AG	TYPE=mnp	1.0
-Replacement	2bp	23049-23050	AT	AG	./data/raw_replacement_1_2bp.fa	1	Freebayes	23050	T	G	TYPE=snp	0.9974842767295597

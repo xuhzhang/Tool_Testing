@@ -1,2 +1,0 @@
-Type	Var_Type	Interval	Raw	New	Fasta	Multiple	Tool	Tool_POS	Tool_REF	Tool_ALT	Tool_Type	Tool_ratio
-Inversion	2bp	13200-13201	CT	AG	./data/raw_inversion_1_2bp.fa	1	Freebayes	13200	CT	AG	TYPE=mnp	1.0

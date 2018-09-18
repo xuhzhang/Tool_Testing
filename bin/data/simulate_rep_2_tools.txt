@@ -1,2 +1,0 @@
-Type	Var_Type	Interval	Raw	New	Fasta	Multiple	Tool	Tool_POS	Tool_REF	Tool_ALT	Tool_Type	Tool_ratio
-Replacement	2bp	23049-23050	AT	AG	./data/raw_replacement_1_2bp.fa	1	Freebayes	23050	T	G	TYPE=snp	0.9974842767295597

@@ -1,2 +1,0 @@
-Type	Var_Type	Interval	Raw	New	Fasta	Multiple	Tool	Tool_POS	Tool_REF	Tool_ALT	Tool_Type	Tool_ratio
-Insertion	2bp	376-377	-	AC	./data/raw_insertion_1_2bp.fa	1	Freebayes	375	GTC	GACTC	TYPE=ins	0.9985163204747775

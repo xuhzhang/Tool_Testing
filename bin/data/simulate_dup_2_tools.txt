@@ -1,2 +1,0 @@
-Type	Var_Type	Interval	Raw	New	Fasta	Multiple	Tool	Tool_POS	Tool_REF	Tool_ALT	Tool_Type	Tool_ratio
-Duplication	2bp	29567-29568	CA	CACA	./data/raw_duplication_1_2bp.fa	1	Freebayes	29566	TCAG	TCACAG	TYPE=ins	1.0
