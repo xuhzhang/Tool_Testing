@@ -1,0 +1,2 @@
+Type	Var_Type	Interval	Raw	New	Fasta	Multiple	Tool	Tool_POS	Tool_REF	Tool_ALT	Tool_Type	Tool_ratio
+Deletion	2bp	19035-19036	CC	-	./data/raw_deletion_1_2bp.fa	1	Freebayes	19034	GCCTA	GTA	TYPE=del	1.0
