@@ -1,2 +1,0 @@
-Type	Var_Type	Interval	Raw	New	Fasta	Multiple	Tool	Tool_POS	Tool_REF	Tool_ALT	Tool_Type	Tool_ratio
-Inversion	3bp	8848-8850	CCG	CGG	./data/raw_inversion_1_3bp.fa	1	Freebayes	8849	C	G	TYPE=snp	1.0

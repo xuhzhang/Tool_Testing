@@ -15,6 +15,7 @@ from merge_file import merge_file
 from mapping import mapping
 from dup_freebayes import freebayes_testing
 from dup_varscan2 import varscan_testing
+from dup_GATK4 import GATK_testing
 
 def main_duplication(reads_length, multiple_count, single_count, bp, repeat_time, copy_number, multi, freq):
 
@@ -46,6 +47,10 @@ def main_duplication(reads_length, multiple_count, single_count, bp, repeat_time
         ##### test tools of VarScan2 ######
         varscan_out = varscan_testing(raw_fasta, bam_out, info_record, freq)
         result_info += varscan_out
+
+        ##### test tools of GATK4 ######
+        gatk_out = GATK_testing(raw_fasta, bam_out, info_record)
+        result_info += gatk_out
         ###################################
 
     dup_res = bam_out.split("_")[0] + "_dup_" + bp + "_tools.txt"
