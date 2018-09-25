@@ -16,6 +16,7 @@ from mapping import mapping
 from rep_freebayes import freebayes_testing
 from rep_varscan2 import varscan_testing
 from rep_GATK4 import GATK_testing
+from rep_lumpy import lumpy_testing
 
 def main_replacement(reads_length, multiple_count, single_count, bp, repeat_time, multi, freq):
 
@@ -52,6 +53,10 @@ def main_replacement(reads_length, multiple_count, single_count, bp, repeat_time
         ##### test tools of GATK4 ######
         gatk_out = GATK_testing(raw_fasta, bam_out, info_record)
         result_info += gatk_out
+
+        ##### test tools of lumpy ######
+        lumpy_out = lumpy_testing(bam_out, info_record)
+        result_info += lumpy_out
         ###################################
 
     rep_res = bam_out.split("_")[0] + "_rep_" + bp + "_tools.txt"

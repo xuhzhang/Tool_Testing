@@ -62,3 +62,4 @@ def freebayes_testing(fa, bam, info_record):
     print("=================== Ending of Analysis  =====================")
     
     return mes
+

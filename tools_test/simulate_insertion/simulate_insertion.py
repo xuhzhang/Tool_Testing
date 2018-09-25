@@ -16,6 +16,7 @@ from mapping import mapping
 from ins_freebayes import freebayes_testing
 from ins_varscan2 import varscan_testing
 from ins_GATK4 import GATK_testing
+from ins_lumpy import lumpy_testing
 
 def main_insertion(reads_length, multiple_count, single_count, bp, repeat_time, multi, freq):
     
@@ -51,6 +52,10 @@ def main_insertion(reads_length, multiple_count, single_count, bp, repeat_time, 
         ##### test tools of GATK4 ######
         gatk_out = GATK_testing(raw_fasta, bam_out, info_record)
         result_info += gatk_out
+
+        ##### test tools of lumpy  ######
+        lumpy_out = lumpy_testing(bam_out, info_record)
+        result_info += lumpy_out
         ###################################
 
     ins_res = bam_out.split("_")[0] + "_ins_" + bp + "_tools.txt"

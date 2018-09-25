@@ -41,13 +41,27 @@ def inversion_bp(bp, raw_fasta):
     new_fasta = "./data/inversion_" + str(bp) + "bp.fasta"
     ref = ">inversion_" + str(bp) + "bp.ref" + "\n"
     pos_bp = random.randint(0, (40000 - int(bp)))
+
     raw_base = info[pos_bp:(pos_bp+bp)]
     new_base = inversed_seq(raw_base)
+
+    ##############################################################
 
     while raw_base == new_base:
         pos_bp = random.randint(0, 40000 - int(bp))
         raw_base = info[pos_bp:(pos_bp+bp)]
         new_base = inversed_seq(raw_base)
+
+    ###### if the variated reads length is more than 10bp, #######
+    ###### then raw_base and new_base will be presented as "-" ###
+    #if int(bp) > 10:
+    #    raw_base = "-"
+    #    new_base = "-"
+    #else:
+    #    raw_base = info[pos_bp:(pos_bp+bp)]
+    #    new_base = inversed_seq(raw_base)
+
+    ##############################################################
 
     new_info = info[:pos_bp] + new_base + info[(pos_bp+bp):]
     with open(new_fasta, 'w') as fw:

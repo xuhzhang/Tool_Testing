@@ -16,6 +16,7 @@ from mapping import mapping
 from del_freebayes import freebayes_testing
 from del_varscan2 import varscan_testing
 from del_GATK4 import GATK_testing
+from del_lumpy import lumpy_testing
 
 def main_deletion(reads_length, multiple_count, single_count, bp, repeat_time, multi, freq):
 
@@ -44,16 +45,20 @@ def main_deletion(reads_length, multiple_count, single_count, bp, repeat_time, m
         bam_out, flag_out, stats_out = mapping(raw_fasta, fq1, fq2)
 
         ##### test tools of FreeBayes #####
-        freebayes_out = freebayes_testing(raw_fasta, bam_out, info_record)
-        result_info += freebayes_out
+        #freebayes_out = freebayes_testing(raw_fasta, bam_out, info_record)
+        #result_info += freebayes_out
 
         ##### test tools of VarScan2 ######
-        varscan_out = varscan_testing(raw_fasta, bam_out, info_record, freq) 
-        result_info += varscan_out
+       # varscan_out = varscan_testing(raw_fasta, bam_out, info_record, freq) 
+       # result_info += varscan_out
 
         ##### test tools of GATK4 ######
-        gatk_out = GATK_testing(raw_fasta, bam_out, info_record)
-        result_info += gatk_out
+        #gatk_out = GATK_testing(raw_fasta, bam_out, info_record)
+        #result_info += gatk_out
+
+        ##### test tools of lumpy #####
+        lumpy_out = lumpy_testing(bam_out, info_record)
+        result_info += lumpy_out
         ###################################
 
     del_res = bam_out.split("_")[0] + "_dele_" + bp + "_tools.txt"
