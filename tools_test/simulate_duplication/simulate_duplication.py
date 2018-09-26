@@ -18,7 +18,7 @@ from dup_varscan2 import varscan_testing
 from dup_GATK4 import GATK_testing
 from dup_lumpy import lumpy_testing
 
-def main_duplication(reads_length, multiple_count, single_count, bp, repeat_time, copy_number, multi, freq):
+def main_duplication(reads_length, multiple_count, single_count, bp, repeat_time, copy_number, multi, freq, tools):
 
     result_info = ""
     title = "Type" + "\t" + "Var_Type" + "\t" + "Interval" + "\t" + "Raw" + "\t" + "New" + "\t" + "Fasta" + "\t" + "Multiple" + "\t" + "Tool" + "\t" + "Tool_POS" + "\t" + "Tool_REF" + "\t" + "Tool_ALT" + "\t" + "Tool_Type" + "\t" + "Tool_ratio" + "\n"
@@ -41,26 +41,27 @@ def main_duplication(reads_length, multiple_count, single_count, bp, repeat_time
         ### add tools to be tested here ###
         bam_out, flag_out, stats_out = mapping(raw_fasta, fq1, fq2)
 
-        ##### test tools of FreeBayes #####
-        freebayes_out = freebayes_testing(raw_fasta, bam_out, info_record)
-        result_info += freebayes_out
+        call_tools = {'gatk':GATK_testing, 'freebayes':freebayes_testing, 'varscan':varscan_testing, 'lumpy':lumpy_testing}
 
-        ##### test tools of VarScan2 ######
-        varscan_out = varscan_testing(raw_fasta, bam_out, info_record, freq)
-        result_info += varscan_out
+        ### if no tools input, execute all tools ###
+        if not tools:
+            sum_tools = list(call_tools.keys())
+        else:
+            sum_tools = tools.lower().split(",")
 
-        ##### test tools of GATK4 ######
-        gatk_out = GATK_testing(raw_fasta, bam_out, info_record)
-        result_info += gatk_out
-
-        ##### test tools of lumpy ######
-        lumpy_out = lumpy_testing(bam_out, info_record)
-        result_info += lumpy_out
+        print(sum_tools)
+        for tool in sum_tools:
+            result_info += call_tools[tool](raw_fasta, bam_out, info_record, freq)
         ###################################
 
     dup_res = bam_out.split("_")[0] + "_dup_" + bp + "_tools.txt"
     with open(dup_res, 'w') as fw:
         fw.write(result_info)
+
+    bam_index = bam_out + ".bai"
+    del_files = [fq1,fq2,bam_out,flag_out,stats_out,bam_index]
+    for de in del_files:
+        os.remove(de)
 
     return dup_res
 
@@ -74,14 +75,15 @@ def parse_parameters(arguments):
     copy_number = arguments['--copys']
     multi = arguments['MULTIPLE']
     freq = arguments['--min_freq']
+    tools = arguments['--tools']
 
     ###### use the function to test tools ######
-    main_duplication(reads_length, multiple_count, single_count, bp, repeat_time, copy_number, multi, freq)
+    main_duplication(reads_length, multiple_count, single_count, bp, repeat_time, copy_number, multi, freq, tools)
 
 if __name__ == "__main__":
     usage = """
     Usage:
-        simulate_duplication.py [-l=150] [-c=100000] [-b=1] [-p=1] [-t=1] [-v=0.2] MULTIPLE
+        simulate_duplication.py [-l=150] [-c=100000] [-b=1] [-p=1] [-t=1] [-v=0.2] [--tools=<arg>] MULTIPLE
 
     Testing different tool on different raw-fasta-based duplication variation
 
@@ -96,6 +98,7 @@ if __name__ == "__main__":
         -p,--copys=1            the copy number [default: 1] 
         -t,--times=1            the repeat time [default: 1]
         -v,--min_freq=0.2       Minimum variant allele frequency threshold [default: 0.2]
+        --tools=<arg>           identify the tested tool, available values are: Freebayes, Varscan, GATK and Lumpy
     """
 
     arguments = docopt(usage)

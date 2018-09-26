@@ -44,7 +44,7 @@ def merge_files(info_record, new):
 
     return mes
 
-def lumpy_testing(bam, info_record):
+def lumpy_testing(_fa, bam, info_record, *args):
 
     print("============= begin to call SV using lumpyexpress ==============")
 
@@ -67,6 +67,9 @@ def lumpy_testing(bam, info_record):
     print(cmd3)
 
     mes = merge_files(info_record, vcf)
+
+    os.remove(split_bam)
+    os.remove(disordants_bam)
 
     print("=================== Ending of Analysis  =====================")
 

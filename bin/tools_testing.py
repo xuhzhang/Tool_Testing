@@ -21,6 +21,7 @@ def call_functions(arguments):
     repeat_time = arguments['--times']
     copy_number = arguments['--copys']
     freq = arguments['--min_freq']
+    tools = arguments['--tools']
 
     sum_info = []
 
@@ -28,7 +29,7 @@ def call_functions(arguments):
         dup_ratio = arguments['--dup']
         dup_multiple_count = int(reads_count) * (1 - float(dup_ratio))
         dup_single_count = int(reads_count) * float(dup_ratio)
-        dup_info_record = main_duplication(reads_length, dup_multiple_count, dup_single_count, bp, repeat_time, copy_number, dup_ratio, freq)
+        dup_info_record = main_duplication(reads_length, dup_multiple_count, dup_single_count, bp, repeat_time, copy_number, dup_ratio, freq, tools)
 
         sum_info.append(dup_info_record)
 
@@ -36,7 +37,7 @@ def call_functions(arguments):
         del_ratio = arguments['--del']
         del_multiple_count = int(reads_count) * (1 - float(del_ratio))
         del_single_count = int(reads_count) * float(del_ratio)
-        del_info_record = main_deletion(reads_length, del_multiple_count, del_single_count, bp, repeat_time, del_ratio, freq)
+        del_info_record = main_deletion(reads_length, del_multiple_count, del_single_count, bp, repeat_time, del_ratio, freq,tools)
 
         sum_info.append(del_info_record)
 
@@ -44,7 +45,7 @@ def call_functions(arguments):
         ins_ratio = arguments['--ins']
         ins_multiple_count = int(reads_count) * (1 - float(ins_ratio))
         ins_single_count = int(reads_count) * float(ins_ratio)
-        ins_info_record = main_insertion(reads_length, ins_multiple_count, ins_single_count, bp, repeat_time, ins_ratio, freq)
+        ins_info_record = main_insertion(reads_length, ins_multiple_count, ins_single_count, bp, repeat_time, ins_ratio, freq,tools)
 
         sum_info.append(ins_info_record)
 
@@ -52,7 +53,7 @@ def call_functions(arguments):
         inv_ratio = arguments['--inv']
         inv_multiple_count = int(reads_count) * (1 - float(inv_ratio))
         inv_single_count = int(reads_count) * float(inv_ratio)
-        inv_info_record = main_inversion(reads_length, inv_multiple_count, inv_single_count, bp, repeat_time, inv_ratio, freq)
+        inv_info_record = main_inversion(reads_length, inv_multiple_count, inv_single_count, bp, repeat_time, inv_ratio, freq,tools)
 
         print(inv_info_record)
         sum_info.append(inv_info_record)
@@ -61,7 +62,7 @@ def call_functions(arguments):
         rep_ratio = arguments['--rep']
         rep_multiple_count = int(reads_count) * (1 - float(rep_ratio))
         rep_single_count = int(reads_count) * float(rep_ratio)
-        rep_info_record = main_replacement(reads_length, rep_multiple_count, rep_single_count, bp, repeat_time, rep_ratio, freq)
+        rep_info_record = main_replacement(reads_length, rep_multiple_count, rep_single_count, bp, repeat_time, rep_ratio, freq,tools)
 
         sum_info.append(rep_info_record)
 
@@ -96,8 +97,7 @@ def main_function(arguments):
 if __name__ == "__main__":
     usage = """
     Usage:
-        tools_testing.py [-l=150] [-c=100000] [-b=1] [-t=1] [-p=1] [-d=1] [-v=0.2] [--dup <dup-ration>] [--del <del-ration>] [--ins <ins-ration>] [--inv <inv-ration>] [--rep <rep-ration>]
-
+        tools_testing.py [-l=150] [-c=100000] [-b=1] [-t=1] [-p=1] [-d=1] [-v=0.2] [--tools=<arg>] [--dup <dup-ratio>] [--del <del-ratio>] [--ins <ins-ratio>] [--inv <inv-ratio>] [--rep <rep-ratio>] 
     Testing different tools on different raw-fasta-based variations
 
     Options:
@@ -114,10 +114,13 @@ if __name__ == "__main__":
         --ins <ins-ratio>           the propertion of inserted-variation reads in all reads
         --inv <inv-ratio>           the propertion of inversed-variation reads in all reads
         --rep <rep-ratio>           the propertion of repeated-variation reads in all reads
+        --tools=<arg>               identify the tested tool, available values are: Freebayes, Varscan, GATK and Lumpy
     """
 
     arguments = docopt(usage)
     
-    worker_num = int(arguments['--thread'])
-    executor = concurrent.futures.ProcessPoolExecutor(max_workers=worker_num)
-    future = executor.submit(main_function, arguments)
+#    worker_num = int(arguments['--thread'])
+#    executor = concurrent.futures.ProcessPoolExecutor(max_workers=worker_num)
+#    future = executor.submit(main_function, arguments)
+
+    main_function(arguments)

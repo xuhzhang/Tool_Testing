@@ -54,7 +54,7 @@ def merge_files(info_record, hvcf, mvcf):
 
     return mes
 
-def GATK_testing(fa, bam, info_record):
+def GATK_testing(fa, bam, info_record, *args):
 
     fa_dict = ".".join(fa.split(".")[:-1]) + ".dict"
     cmd1 = "java -jar %s CreateSequenceDictionary R=%s O=%s" % (picard, fa, fa_dict)
@@ -85,6 +85,11 @@ def GATK_testing(fa, bam, info_record):
     mes = merge_files(info_record, hvcf, mvcf)
 
     print("=================== Ending of Analysis  =====================")
+    
+    hvcf_index = hvcf + ".idx"
+    mvcf_index = mvcf + ".idx"
+    os.remove(hvcf_index)
+    os.remove(mvcf_index)
 
     return mes
 

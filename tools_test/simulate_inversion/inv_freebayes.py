@@ -45,7 +45,7 @@ def merge_files(info_record, new):
 
     return mes
 
-def freebayes_testing(fa, bam, info_record):
+def freebayes_testing(fa, bam, info_record, *args):
 
     print("============= begin to call SNV using FreeBayes ==============")
 

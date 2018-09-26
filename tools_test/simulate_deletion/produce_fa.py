@@ -12,11 +12,13 @@ def produce_fasta(prefix):
 
     fasta_name = "./data/" + prefix + ".fa"
 
-    with open(fasta_name, 'w') as fw:
-        fw.write(">ref\n")
-        seq = ["A", "T", "G", "C"]
-        for i in range(40000):
-            random_base = random.choice(seq)
-            fw.write(random_base)
+    if not os.path.exists(fasta_name):
+        print("++++++++++++ create a new fasta ++++++++++++++")
+        with open(fasta_name, 'w') as fw:
+            fw.write(">ref\n")
+            seq = ["A", "T", "G", "C"]
+            for i in range(40000):
+                random_base = random.choice(seq)
+                fw.write(random_base)
 
     return fasta_name
