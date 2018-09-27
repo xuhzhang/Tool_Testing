@@ -17,6 +17,8 @@ from rep_freebayes import freebayes_testing
 from rep_varscan2 import varscan_testing
 from rep_GATK4 import GATK_testing
 from rep_lumpy import lumpy_testing
+from rep_delly import delly_testing
+from rep_gridss import gridss_testing
 
 def main_replacement(reads_length, multiple_count, single_count, bp, repeat_time, multi, freq, tools):
 
@@ -42,7 +44,7 @@ def main_replacement(reads_length, multiple_count, single_count, bp, repeat_time
         ### add tools to be tested here ###
         bam_out, flag_out, stats_out = mapping(raw_fasta, fq1, fq2)
 
-        call_tools = {'gatk':GATK_testing, 'freebayes':freebayes_testing, 'varscan':varscan_testing, 'lumpy':lumpy_testing}
+        call_tools = {'gatk':GATK_testing, 'freebayes':freebayes_testing, 'varscan':varscan_testing, 'lumpy':lumpy_testing, 'delly':delly_testing, 'gridss':gridss_testing, }
 
         #### if no tools input, execute all tools ####
         if not tools:
@@ -98,7 +100,7 @@ if __name__ == "__main__":
         -b,--basepair=1         the length of replaced bases [default: 1]
         -t,--times=1            the repeat time [default: 1]
         -v,--min_freq=0.2       Minimum variant allele frequency threshold [default: 0.2]
-        --tools=<arg>           identify the tested tool, available values are: Freebayes,Varscan, GATK and Lumpy
+        --tools=<arg>           identify the tested tool, available values are: Freebayes,Varscan, Delly, Gridss, GATK and Lumpy
     """
 
     arguments = docopt(usage)
