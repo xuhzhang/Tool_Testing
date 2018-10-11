@@ -55,6 +55,7 @@ def replacement_bp(bp, raw_fasta):
         ##### then it will be replaced by "-" ##############
         if int(bp) > 10:
             raw_base = "-"
+            new_base = "-"
         ###### use the dictionary to save the variated information ######
         info_record = {}
         var_interval = str(pos_bp+1) + "-" + str(pos_bp + bp)

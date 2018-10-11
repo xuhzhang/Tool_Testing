@@ -1,0 +1,10 @@
+Type	Var_Type	Interval	Raw	New	Fasta	Multiple	Tool	Tool_POS	Tool_REF	Tool_ALT	Tool_Type	Tool_ratio
+Deletion	1bp	33354-33354	G	-	./data/raw_deletion_1_1bp.fa	1	GATK	33351	TG	T	HaplotypeCaller	1.00
+Deletion	1bp	33354-33354	G	-	./data/raw_deletion_1_1bp.fa	1	GATK	33351	TG	T	Mutect2	0.972
+Deletion	1bp	33354-33354	G	-	./data/raw_deletion_1_1bp.fa	1	Freebayes	33351	TGGGTA	TGGTA	TYPE=del	1.0
+Deletion	1bp	33354-33354	G	-	./data/raw_deletion_1_1bp.fa	1	VarScan	33351	T	-G/-G	indel	95.88%
+Deletion	1bp	33354-33354	G	-	./data/raw_deletion_1_1bp.fa	1	lumpy	-	-	-	-	-
+Deletion	1bp	33354-33354	G	-	./data/raw_deletion_1_1bp.fa	1	Delly	-	-	-	-	-
+Deletion	1bp	33354-33354	G	-	./data/raw_deletion_1_1bp.fa	1	Gridss	-	-	-	-	-
+Deletion	1bp	33354-33354	G	-	./data/raw_deletion_1_1bp.fa	1	Pindel	33351	TG	HOMSEQ=GG	SVLEN=-1	0.9773071104387292
+Deletion	1bp	33354-33354	G	-	./data/raw_deletion_1_1bp.fa	1	Pindel	33353	G	SVLEN=54	SVTYPE=INV	0.04013377926421405

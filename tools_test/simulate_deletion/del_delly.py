@@ -37,23 +37,19 @@ def merge_files(info_record, new):
                 mes += ori_info + "\t" + pos + "\t" + ref + "\t" + alt + "\t" + var_type + "\t" + str(ratio) + "\n"
 
         if not mes:
-            mes = ori_info + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "\n"
-
-    print(mes)
+            mes = ori_info + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\n"
 
     return mes
 
 def delly_testing(fa, bam, info_record, *args):
 
-    print("============= begin to call SNV using Delly ==============")
-
     bcf = ".".join(bam.split(".")[:-1]) + "_delly.bcf"
-    cmd1 = "%s call -g %s -o %s %s" % (delly, fa, bcf, bam)
+    cmd1 = "%s call -g %s -o %s %s > /dev/null 2>&1" % (delly, fa, bcf, bam)
 
     subprocess.call(cmd1, shell=True)
 
     vcf = ".".join(bam.split(".")[:-1]) + "_delly.vcf"
-    cmd2 = "%s view %s > %s" % (bcftools, bcf, vcf)
+    cmd2 = "%s view %s > %s 2>/dev/null" % (bcftools, bcf, vcf)
 
     subprocess.call(cmd2, shell=True)
 
@@ -62,7 +58,5 @@ def delly_testing(fa, bam, info_record, *args):
     bcf_index = bcf + ".csi"
     os.remove(bcf)
     os.remove(bcf_index)
-
-    print("=================== Ending of Analysis  =====================")
 
     return mes

@@ -19,6 +19,7 @@ from dup_GATK4 import GATK_testing
 from dup_lumpy import lumpy_testing
 from dup_delly import delly_testing
 from dup_gridss import gridss_testing
+from dup_pindel import pindel_testing
 
 def main_duplication(reads_length, multiple_count, single_count, bp, repeat_time, copy_number, multi, freq, tools):
 
@@ -43,7 +44,7 @@ def main_duplication(reads_length, multiple_count, single_count, bp, repeat_time
         ### add tools to be tested here ###
         bam_out, flag_out, stats_out = mapping(raw_fasta, fq1, fq2)
 
-        call_tools = {'gatk':GATK_testing, 'freebayes':freebayes_testing, 'varscan':varscan_testing, 'lumpy':lumpy_testing, 'delly':delly_testing, 'gridss':gridss_testing, }
+        call_tools = {'gatk':GATK_testing, 'freebayes':freebayes_testing, 'varscan':varscan_testing, 'lumpy':lumpy_testing, 'delly':delly_testing, 'gridss':gridss_testing, 'pindel':pindel_testing, }
 
         ### if no tools input, execute all tools ###
         if not tools:
@@ -54,16 +55,17 @@ def main_duplication(reads_length, multiple_count, single_count, bp, repeat_time
         print(sum_tools)
         for tool in sum_tools:
             result_info += call_tools[tool](raw_fasta, bam_out, info_record, freq)
+        
+        #### delete the redundant files ####
+        bam_index = bam_out + ".bai"
+        del_files = [fq1,fq2,bam_out,flag_out,stats_out,bam_index]
+        for de in del_files:
+            os.remove(de)
         ###################################
 
     dup_res = bam_out.split("_")[0] + "_dup_" + bp + "_tools.txt"
     with open(dup_res, 'w') as fw:
         fw.write(result_info)
-
-    bam_index = bam_out + ".bai"
-    del_files = [fq1,fq2,bam_out,flag_out,stats_out,bam_index]
-    for de in del_files:
-        os.remove(de)
 
     return dup_res
 
@@ -100,7 +102,7 @@ if __name__ == "__main__":
         -p,--copys=1            the copy number [default: 1] 
         -t,--times=1            the repeat time [default: 1]
         -v,--min_freq=0.2       Minimum variant allele frequency threshold [default: 0.2]
-        --tools=<arg>           identify the tested tool, available values are: Freebayes, Varscan, GATK, delly, Gridss and Lumpy
+        --tools=<arg>           identify the tested tool, available values are: Freebayes, Varscan, GATK, Delly, Pindel, Gridss and Lumpy
     """
 
     arguments = docopt(usage)

@@ -13,6 +13,6 @@ import subprocess
 
 def produce_fq(raw_fasta, reads_length, multiple_count, output):
 
-    cmd = "%s -na -p -ss %s -i %s -l %s -c %s -m 300 -s 70 -o %s" % (art, machine, raw_fasta, reads_length, multiple_count, output)
+    cmd = "%s -na -p -ss %s -i %s -l %s -c %s -m 300 -s 70 -o %s > /dev/null 2>&1" % (art, machine, raw_fasta, reads_length, multiple_count, output)
     subprocess.call(cmd, shell=True)    
     

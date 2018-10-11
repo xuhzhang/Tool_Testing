@@ -60,8 +60,9 @@ def gridss_testing(fa, bam, info_record, *args):
     bam_gridss = bam + ".gridss.working"
     assemble_gridss = assemble_bam + ".gridss.working"
     vcf_gridss = vcf + ".gridss.working"
-    vcf_index = vcf + ".idx"
-    del_file = [assemble_bam, vcf_index]
+    #vcf_index = vcf + ".idx"
+    #bam_bed = assemble_bam + ".throttled.bed"
+    del_file = [assemble_bam]
     del_dirs = [bam_gridss, vcf_gridss, assemble_gridss]
 
     for di in del_dirs:

@@ -32,7 +32,7 @@ def merge_files(info_record, new):
             if "#" not in fn_line:
                 pos = fn_line.strip().split("\t")[1]
                 ref = fn_line.strip().split("\t")[3]
-                alt = "-"
+                alt = fn_line.strip().split("\t")[7].split(";")[2]
                 var_type = fn_line.strip().split("\t")[7].split(";")[0] 
                 ratio = "-" 
                 mes += ori_info + "\t" + pos + "\t" + ref + "\t" + alt + "\t" + var_type + "\t" + str(ratio) + "\n"

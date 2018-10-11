@@ -38,31 +38,29 @@ def merge_files(info_record, new):
                 mes += ori_info + "\t" + pos + "\t" + ref + "\t" + alt + "\t" + var_type + "\t" + str(ratio) + "\n"
 
         if not mes:
-            mes = ori_info + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "\n"
-
-    print(mes)
+            mes = ori_info + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\n"
 
     return mes
                 
 def gridss_testing(fa, bam, info_record, *args):
 
-    print("============= begin to call SNV using Delly ==============")
-
     vcf = ".".join(bam.split(".")[:-1]) + "_gridss.vcf"
     assemble_bam = ".".join(bam.split(".")[:-1]) + "_gridss.bam" 
-    cmd = "java -jar %s REFERENCE_SEQUENCE=%s INPUT=%s OUTPUT=%s ASSEMBLY=%s" % (gridss, fa, bam, vcf, assemble_bam)
+    cmd = "java -jar %s REFERENCE_SEQUENCE=%s INPUT=%s OUTPUT=%s ASSEMBLY=%s > /dev/null 2>&1" % (gridss, fa, bam, vcf, assemble_bam)
     subprocess.call(cmd, shell=True)
 
     mes = merge_files(info_record, vcf)
-
-    print("=================== Ending of Analysis  =====================")
 
     bam_gridss = bam + ".gridss.working"
     assemble_gridss = assemble_bam + ".gridss.working"
     vcf_gridss = vcf + ".gridss.working"
     vcf_index = vcf + ".idx"
+    bam_bed = assemble_bam + ".throttled.bed"
     del_file = [assemble_bam, vcf_index]
     del_dirs = [bam_gridss, vcf_gridss, assemble_gridss]
+
+    if os.path.exists(bam_bed):
+        os.remove(bam_bed)
 
     for di in del_dirs:
         shutil.rmtree(di)

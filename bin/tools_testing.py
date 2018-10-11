@@ -4,7 +4,7 @@
 import os
 import sys
 from docopt import docopt
-import concurrent.futures
+from concurrent.futures import ProcessPoolExecutor
 sdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../tools_test/")
 sys.path.insert(0, sdir)
 from simulate_deletion.simulate_deletion import main_deletion
@@ -22,8 +22,10 @@ def call_functions(arguments):
     copy_number = arguments['--copys']
     freq = arguments['--min_freq']
     tools = arguments['--tools']
+    worker_num = int(arguments['--thread'])
 
     sum_info = []
+    work_pool = ProcessPoolExecutor(int(worker_num))
 
     if arguments['--dup']:
         dup_ratio = arguments['--dup']
@@ -31,15 +33,15 @@ def call_functions(arguments):
         dup_single_count = int(reads_count) * float(dup_ratio)
         dup_info_record = main_duplication(reads_length, dup_multiple_count, dup_single_count, bp, repeat_time, copy_number, dup_ratio, freq, tools)
 
-        sum_info.append(dup_info_record)
-
     if arguments['--del']:
         del_ratio = arguments['--del']
         del_multiple_count = int(reads_count) * (1 - float(del_ratio))
         del_single_count = int(reads_count) * float(del_ratio)
-        del_info_record = main_deletion(reads_length, del_multiple_count, del_single_count, bp, repeat_time, del_ratio, freq, tools)
 
-        sum_info.append(del_info_record)
+        del_in_info = ""
+        for ti in range(int(repeat_time)):
+            del_info = work_pool.submit(main_deletion, reads_length, del_multiple_count, del_single_count, bp, ti, del_ratio, freq, tools, del_in_info)
+            sum_info.append(del_info)
 
     if arguments['--ins']:
         ins_ratio = arguments['--ins']
@@ -47,7 +49,6 @@ def call_functions(arguments):
         ins_single_count = int(reads_count) * float(ins_ratio)
         ins_info_record = main_insertion(reads_length, ins_multiple_count, ins_single_count, bp, repeat_time, ins_ratio, freq, tools)
 
-        sum_info.append(ins_info_record)
 
     if arguments['--inv']:
         inv_ratio = arguments['--inv']
@@ -56,16 +57,15 @@ def call_functions(arguments):
         inv_info_record = main_inversion(reads_length, inv_multiple_count, inv_single_count, bp, repeat_time, inv_ratio, freq, tools)
 
         print(inv_info_record)
-        sum_info.append(inv_info_record)
 
     if arguments['--rep']:
         rep_ratio = arguments['--rep']
         rep_multiple_count = int(reads_count) * (1 - float(rep_ratio))
         rep_single_count = int(reads_count) * float(rep_ratio)
         rep_info_record = main_replacement(reads_length, rep_multiple_count, rep_single_count, bp, repeat_time, rep_ratio, freq, tools)
-
         sum_info.append(rep_info_record)
 
+    work_pool.shutdown(wait=True)
     return sum_info
 
 def file_merge(sum_info):
@@ -87,11 +87,11 @@ def file_merge(sum_info):
 def main_function(arguments):
 
     sum_info = call_functions(arguments)
-    aggregate_file = file_merge(sum_info)
+    #aggregate_file = file_merge(sum_info)
 
-    print(aggregate_file)
+    #print(aggregate_file)
 
-    return aggregate_file
+    return sum_info
 
 
 if __name__ == "__main__":
@@ -119,7 +119,11 @@ if __name__ == "__main__":
     """
 
     arguments = docopt(usage)
-    
-    worker_num = int(arguments['--thread'])
-    executor = concurrent.futures.ProcessPoolExecutor(max_workers=worker_num)
-    future = executor.submit(main_function, arguments)
+    sum_info = main_function(arguments)
+
+    total_file = "./data/aggregate.txt"
+    title = "Type" + "\t" + "Var_Type" + "\t" + "Interval" + "\t" + "Raw" + "\t" + "New" + "\t" + "Fasta" + "\t" + "Multiple" + "\t" + "Tool" + "\t" + "Tool_POS" + "\t" + "Tool_REF" + "\t" + "Tool_ALT" + "\t" + "Tool_Type" + "\t" + "Tool_ratio" + "\n"
+    with open(total_file, 'w') as fw:
+        fw.write(title)
+        for info in sum_info:
+            fw.write(info.result())

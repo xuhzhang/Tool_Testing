@@ -40,26 +40,18 @@ def merge_files(info_record, new):
                 mes += ori_info + "\t" + pos + "\t" + ref + "\t" + alt + "\t" + var_type + "\t" + str(ratio) + "\n"
         
         if not mes:
-            mes = ori_info + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "\n"
-
-    print(mes)
+            mes = ori_info + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\n"
 
     return mes
 
 def freebayes_testing(fa, bam, info_record, *args):
 
-    print("============= begin to call SNV using FreeBayes ==============")
-
     vcf = ".".join(bam.split(".")[:-1]) + "_freebayes.vcf"
-    cmd = "%s --fasta-reference %s %s > %s" % (freebayes, fa, bam, vcf)
-    
-    print(cmd)
+    cmd = "%s --fasta-reference %s %s > %s 2>/dev/null" % (freebayes, fa, bam, vcf)
     
     subprocess.call(cmd, shell=True)
     
     mes = merge_files(info_record, vcf)
 
-    print("=================== Ending of Analysis  =====================")
-    
     return mes
 

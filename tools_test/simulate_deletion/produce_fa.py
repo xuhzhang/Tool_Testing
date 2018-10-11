@@ -7,13 +7,11 @@ import random
 def produce_fasta(prefix):
     
     if not os.path.exists("./data"):
-        print("    ====  creat the directory called data  ====")
         os.mkdir("./data")
 
     fasta_name = "./data/" + prefix + ".fa"
 
     if not os.path.exists(fasta_name):
-        print("++++++++++++ create a new fasta ++++++++++++++")
         with open(fasta_name, 'w') as fw:
             fw.write(">ref\n")
             seq = ["A", "T", "G", "C"]
