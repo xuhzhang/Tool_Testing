@@ -1,3 +1,0 @@
-Type	Var_Type	Interval	Raw	New	Fasta	Multiple	Tool	Tool_POS	Tool_REF	Tool_ALT	Tool_Type	Tool_ratio
-Insertion	10bp	8169-8178	-	AGTCGCACTC	./data/raw_insertion_1_10bp.fa	1	GATK	8168	T	TAGTCGCACTC	HaplotypeCaller	1.00
-Insertion	10bp	8169-8178	-	AGTCGCACTC	./data/raw_insertion_1_10bp.fa	1	GATK	8168	T	TAGTCGCACTC	Mutect2	0.977
