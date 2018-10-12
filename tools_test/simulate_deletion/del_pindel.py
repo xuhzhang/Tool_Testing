@@ -69,9 +69,3 @@ def pindel_testing(fa, bam, info_record, *args):
         os.remove(del_file)
     
     return mes
-
-if __name__ == "__main__":
-    fa = "./data/raw_deletion_1_1000bp.fa"
-    bam = "./data/simulate_1_del_1000bp_bwa.bam"
-    info_record = {}
-    pindel_testing(fa, bam, info_record)

@@ -56,11 +56,14 @@ def gridss_testing(fa, bam, info_record, *args):
     vcf_gridss = vcf + ".gridss.working"
     vcf_index = vcf + ".idx"
     bam_bed = assemble_bam + ".throttled.bed"
-    del_file = [assemble_bam, vcf_index]
+    del_file = [assemble_bam]
     del_dirs = [bam_gridss, vcf_gridss, assemble_gridss]
 
     if os.path.exists(bam_bed):
         os.remove(bam_bed)
+    
+    if os.path.exists(vcf_index):
+        os.remove(vcf_index)
 
     for di in del_dirs:
         shutil.rmtree(di)
@@ -70,9 +73,3 @@ def gridss_testing(fa, bam, info_record, *args):
 
     return mes
 
-if __name__ == "__main__":
-
-    fa = "./data/raw_deletion_1_1000bp.fa"
-    bam = "./data/simulate_1_del_1000bp_bwa.bam"
-    info_record = {'info': ['1000bp', '7640-8639', '-'], 'fasta': './data/new_deletion_1_1000bp.fa', 'raw_fasta': './data/raw_deletion_1_1000bp.fa', 'multiple': '1'}
-    gridss_testing(fa, bam, info_record)

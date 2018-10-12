@@ -67,12 +67,3 @@ def varscan_testing(fa, bam, info_record, freq):
 
     return mes
 
-if __name__ == "__main__":
-   
-    fa = "/home/syngen/zhangxu/tools_test/tools_test/simulate_deletion/data/raw_deletion_1_1bp.fa"
-    bam = "/home/syngen/zhangxu/tools_test/tools_test/simulate_deletion/data/simulate_1_del_1bp_bwa.bam"
-    info_record = {'info': ['1bp', '3746-3746', 'T'], 'fasta': './data/new_deletion_1_1bp.fa', 'raw_fasta': './data/raw_deletion_1_1bp.fa', 'multiple': '1'}
-    freq = float(0.2)
-    mes = varscan_testing(fa, bam, info_record, freq)
-    with open("mes.txt", 'w') as fw:
-        fw.write(mes)

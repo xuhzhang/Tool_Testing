@@ -48,10 +48,7 @@ def freebayes_testing(fa, bam, info_record, *args):
 
     vcf = ".".join(bam.split(".")[:-1]) + "_freebayes.vcf"
     cmd = "%s --fasta-reference %s %s > %s 2>/dev/null" % (freebayes, fa, bam, vcf)
-    
     subprocess.call(cmd, shell=True)
-    
     mes = merge_files(info_record, vcf)
-
     return mes
 

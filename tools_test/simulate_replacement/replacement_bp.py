@@ -37,7 +37,6 @@ def replacement_bp(bp, raw_fasta):
         with open(json_file, 'r') as fjr:
             info_record = json.load(fjr)
     else:
-        print("++++++++++++ create a new changed fasta ++++++++++++++")
         ref = ">replace_" + str(bp) + "bp.ref" + "\n"
         pos_bp = random.randint(0, (40000 - int(bp)))
         raw_base = info[(pos_bp):(pos_bp+bp)]

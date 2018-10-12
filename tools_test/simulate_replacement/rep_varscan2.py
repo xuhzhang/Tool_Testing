@@ -49,30 +49,20 @@ def merge_files(info_record, indel_vcf, snp_vcf):
                 mes += ori_info + "\t" + pos + "\t" + ref + "\t" + alt + "\t" + var_type + "\t" + str(ratio) + "\n"
 
     if not mes:
-        mes = ori_info + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "\n"
-
-        print(mes)
+        mes = ori_info + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\t" + "-" + "\n"
 
     return mes
 
 def varscan_testing(fa, bam, info_record, freq):
 
-    print("============= begin to call SNV using VarScan2 ==============")
-
     varscan_indel_vcf = ".".join(bam.split(".")[:-1]) + "_varscan_indel.vcf"
-    cmd = "samtools mpileup -f %s %s | java -jar %s pileup2indel --min-var-freq %f 1>%s" % (fa, bam, varscan, float(freq), varscan_indel_vcf)
-
-    print(cmd)
+    cmd = "samtools mpileup -f %s %s 2>/dev/null | java -jar %s pileup2indel --min-var-freq %f 1>%s 2>/dev/null" % (fa, bam, varscan, float(freq), varscan_indel_vcf)
     subprocess.call(cmd, shell=True)
 
     varscan_snp_vcf = ".".join(bam.split(".")[:-1]) + "_varscan_snp.vcf"
-    cmd = "samtools mpileup -f %s %s | java -jar %s pileup2snp --min-var-freq %f 1>%s" % (fa, bam, varscan, float(freq), varscan_snp_vcf)
-
-    print(cmd)
+    cmd = "samtools mpileup -f %s %s 2>/dev/null | java -jar %s pileup2snp --min-var-freq %f 1>%s 2>/dev/null" % (fa, bam, varscan, float(freq), varscan_snp_vcf)
     subprocess.call(cmd, shell=True)
 
     mes = merge_files(info_record, varscan_indel_vcf, varscan_snp_vcf)
-
-    print("=================== Ending of Analysis  =====================")
 
     return mes

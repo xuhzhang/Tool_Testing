@@ -21,54 +21,51 @@ from rep_delly import delly_testing
 from rep_gridss import gridss_testing
 from rep_pindel import pindel_testing
 
-def main_replacement(reads_length, multiple_count, single_count, bp, repeat_time, multi, freq, tools):
+def main_replacement(reads_length, multiple_count, single_count, bp, ti, multi, freq, tools, result_info):
 
-    result_info = ""
-    title = "Type" + "\t" + "Var_Type" + "\t" + "Interval" + "\t" + "Raw" + "\t" + "New" + "\t" + "Fasta" + "\t" + "Multiple" + "\t" + "Tool" + "\t" + "Tool_POS" + "\t" + "Tool_REF" + "\t" + "Tool_ALT" + "\t" + "Tool_Type" + "\t" + "Tool_ratio" + "\n"
+    raw_fasta_prefix = "raw_replacement_" + str(ti + 1) + "_" + str(bp) + "bp"
+    raw_fasta = produce_fasta(raw_fasta_prefix)
+    multiple_output = "/".join(raw_fasta.split("/")[:2]) + "/multiple" + '_' + str(ti+1) + '_rep_' + str(bp) + "bp" + "_"
+    single_output = "/".join(raw_fasta.split("/")[:2]) + "/single" + '_' + str(ti+1) + '_rep_' + str(bp) + "bp" + "_"
+    produce_fq(raw_fasta, reads_length, multiple_count, multiple_output)
+    info_record = replacement_bp(bp, raw_fasta)
+    new_fasta = info_record['fasta']
+    info_record['raw_fasta'] = raw_fasta
+    info_record['multiple'] = multi
+    produce_fq(new_fasta, reads_length, single_count, single_output)
+    files = [multiple_output, single_output]
+    fq1, fq2 = merge_file(files)
 
-    result_info += title
+    print(info_record)
+    ### add tools to be tested here ###
+    bam_out, flag_out, stats_out = mapping(raw_fasta, fq1, fq2)
 
-    for ti in range(int(repeat_time)):
-        raw_fasta_prefix = "raw_replacement_" + str(ti + 1) + "_" + str(bp) + "bp"
-        raw_fasta = produce_fasta(raw_fasta_prefix)
-        multiple_output = "/".join(raw_fasta.split("/")[:2]) + "/multiple" + '_' + str(ti+1) + '_rep_' + str(bp) + "bp" + "_"
-        single_output = "/".join(raw_fasta.split("/")[:2]) + "/single" + '_' + str(ti+1) + '_rep_' + str(bp) + "bp" + "_"
-        produce_fq(raw_fasta, reads_length, multiple_count, multiple_output)
-        info_record = replacement_bp(bp, raw_fasta)
-        new_fasta = info_record['fasta']
-        info_record['raw_fasta'] = raw_fasta
-        info_record['multiple'] = multi
-        produce_fq(new_fasta, reads_length, single_count, single_output)
-        files = [multiple_output, single_output]
-        fq1, fq2 = merge_file(files)
+    call_tools = {'gatk':GATK_testing, 'freebayes':freebayes_testing, 'varscan':varscan_testing, 'lumpy':lumpy_testing, 'delly':delly_testing, 'gridss':gridss_testing, 'pindel':pindel_testing, }
 
-        ### add tools to be tested here ###
-        bam_out, flag_out, stats_out = mapping(raw_fasta, fq1, fq2)
+    #### if no tools input, execute all tools ####
+    if not tools:
+        sum_tools = list(call_tools.keys())
+    else:
+        sum_tools = tools.lower().split(",")
 
-        call_tools = {'gatk':GATK_testing, 'freebayes':freebayes_testing, 'varscan':varscan_testing, 'lumpy':lumpy_testing, 'delly':delly_testing, 'gridss':gridss_testing, 'pindel':pindel_testing, }
+    for tool in sum_tools:
+        result_info += call_tools[tool](raw_fasta, bam_out, info_record, freq)
 
-        #### if no tools input, execute all tools ####
-        if not tools:
-            sum_tools = list(call_tools.keys())
-        else:
-            sum_tools = tools.lower().split(",")
+    ### delete the redundant files ###
+    bam_index = bam_out + ".bai"
+    new_fa_json = ".".join(new_fasta.split(".")[:-1]) + ".json"
+    raw_fa_bwt = raw_fasta + ".bwt"
+    raw_fa_pac = raw_fasta + ".pac"
+    raw_fa_ann = raw_fasta + ".ann"
+    raw_fa_amb = raw_fasta + ".amb"
+    raw_fa_sa = raw_fasta + ".sa"
+    raw_fa_dict = ".".join(raw_fasta.split(".")[:-1]) + ".dict"
+    raw_fa_fai = raw_fasta + ".fai"
+    del_files = [fq1,fq2,bam_out,flag_out,stats_out,bam_index,new_fa_json,raw_fa_bwt,raw_fa_pac,raw_fa_ann,raw_fa_amb,raw_fa_sa,raw_fa_dict,raw_fa_fai]
+    for de in del_files:
+        os.remove(de)
 
-        print(sum_tools)
-        for tool in sum_tools:
-            result_info += call_tools[tool](raw_fasta, bam_out, info_record, freq)
-
-        ### delete the redundant files ###
-        bam_index = bam_out + ".bai"
-        del_files = [fq1,fq2,bam_out,flag_out,stats_out,bam_index]
-        for de in del_files:
-            os.remove(de)
-        ###################################
-
-    rep_res = bam_out.split("_")[0] + "_rep_" + bp + "_tools.txt"
-    with open(rep_res, 'w') as fw:
-        fw.write(result_info)
-
-    return rep_res
+    return result_info
 
 def parse_parameters(arguments):
 
@@ -82,7 +79,16 @@ def parse_parameters(arguments):
     tools = arguments['--tools']
 
     ###### use the function to test tools ######
-    main_replacement(reads_length, multiple_count, single_count, bp, repeat_time, multi, freq, tools)
+    result_info = ""
+    title = "Type" + "\t" + "Var_Type" + "\t" + "Interval" + "\t" + "Raw" + "\t" + "New" + "\t" + "Fasta" + "\t" + "Multiple" + "\t" + "Tool" + "\t" + "Tool_POS" + "\t" + "Tool_REF" + "\t" + "Tool_ALT" + "\t" + "Tool_Type" + "\t" + "Tool_ratio" + "\n"
+
+    for ti in range(int(repeat_time)):
+        result_info += main_replacement(reads_length, multiple_count, single_count, bp, ti, multi, freq, tools, result_info)
+
+    rep_res = "./data/simulate" + "_rep_" + bp + "_tools.txt"
+    with open(rep_res, 'w') as fw:
+        fw.write(title)
+        fw.write(result_info)
 
 if __name__ == "__main__":
     usage = """

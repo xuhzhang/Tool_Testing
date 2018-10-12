@@ -45,12 +45,10 @@ def delly_testing(fa, bam, info_record, *args):
 
     bcf = ".".join(bam.split(".")[:-1]) + "_delly.bcf"
     cmd1 = "%s call -g %s -o %s %s > /dev/null 2>&1" % (delly, fa, bcf, bam)
-
     subprocess.call(cmd1, shell=True)
 
     vcf = ".".join(bam.split(".")[:-1]) + "_delly.vcf"
     cmd2 = "%s view %s > %s 2>/dev/null" % (bcftools, bcf, vcf)
-
     subprocess.call(cmd2, shell=True)
 
     mes = merge_files(info_record, vcf)

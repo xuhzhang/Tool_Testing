@@ -57,14 +57,14 @@ def GATK_testing(fa, bam, info_record, *args):
     fa_dict = ".".join(fa.split(".")[:-1]) + ".dict"
     cmd1 = "java -jar %s CreateSequenceDictionary R=%s O=%s > /dev/null 2>&1" % (picard, fa, fa_dict)
     subprocess.call(cmd1, shell=True)
-    cmd2 = "%s faidx %s" % (samtools, fa)
+    cmd2 = "%s faidx %s > /dev/null 2>&1" % (samtools, fa)
     subprocess.call(cmd2, shell=True)
 
     hvcf = ".".join(bam.split(".")[:-1]) + "_HaplotypeCaller.vcf"
     cmd3 = "%s HaplotypeCaller -R %s -I %s -O %s > /dev/null 2>&1" % (gatk, fa, bam, hvcf)
     subprocess.call(cmd3, shell=True)
 
-    cmd4 = "%s view -H %s | grep '^@RG' | awk -F ':' '{print $5}' > tmp.txt 2>/dev/null" % (samtools, bam)
+    cmd4 = "%s view -H %s 2>/dev/null | grep '^@RG' | awk -F ':' '{print $5}' > tmp.txt" % (samtools, bam)
     subprocess.call(cmd4, shell=True)
     
     with open('tmp.txt', 'r') as fr:
@@ -84,13 +84,3 @@ def GATK_testing(fa, bam, info_record, *args):
     os.remove(mvcf_index)
 
     return mes
-
-if __name__ == "__main__":
-
-    fa = "./data/raw_deletion_1_2bp.fa"
-    bam = "./data/simulate_1_del_2bp_bwa.bam"
-    info_record = {'info': ['2bp', '27091-27092', 'CG'], 'fasta': './data/new_deletion_1_2bp.fa', 'raw_fasta': './data/raw_deletion_1_2bp.fa', 'multiple': '1'}
-    GATK_testing(fa, bam, info_record)
-
-
-
