@@ -1,9 +1,0 @@
-Type	Var_Type	Interval	Raw	New	Fasta	Multiple	Tool	Tool_POS	Tool_REF	Tool_ALT	Tool_Type	Tool_ratio
-Deletion	3bp	7603-7605	CGC	-	./data/raw_deletion_1_3bp.fa	0.5	GATK	7602	ACGC	A	HaplotypeCaller	0.500
-Deletion	3bp	7603-7605	CGC	-	./data/raw_deletion_1_3bp.fa	0.5	GATK	7602	ACGC	A	Mutect2	0.480
-Deletion	3bp	7603-7605	CGC	-	./data/raw_deletion_1_3bp.fa	0.5	Freebayes	7602	ACGCC	AC	TYPE=del	0.46564885496183206
-Deletion	3bp	7603-7605	CGC	-	./data/raw_deletion_1_3bp.fa	0.5	VarScan	7602	A	*/-CGC	indel	44.18%
-Deletion	3bp	7603-7605	CGC	-	./data/raw_deletion_1_3bp.fa	0.5	lumpy	-	-	-	-	-
-Deletion	3bp	7603-7605	CGC	-	./data/raw_deletion_1_3bp.fa	0.5	Delly	-	-	-	-	-
-Deletion	3bp	7603-7605	CGC	-	./data/raw_deletion_1_3bp.fa	0.5	Gridss	-	-	-	-	-
-Deletion	3bp	7603-7605	CGC	-	./data/raw_deletion_1_3bp.fa	0.5	Pindel	7602	ACGC	HOMSEQ=C	SVLEN=-3	0.45770392749244715

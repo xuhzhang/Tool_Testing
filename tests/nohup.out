@@ -1,3 +1,0 @@
-nohup: 忽略输入
-{'info': ['3bp', '11917-11919', 'CTT'], 'fasta': './data/new_deletion_1_3bp.fa', 'raw_fasta': './data/raw_deletion_1_3bp.fa', 'multiple': '0.5'}
-327 410
