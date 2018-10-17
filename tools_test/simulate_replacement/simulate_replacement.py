@@ -63,7 +63,8 @@ def main_replacement(reads_length, multiple_count, single_count, bp, ti, multi, 
     raw_fa_fai = raw_fasta + ".fai"
     del_files = [fq1,fq2,bam_out,flag_out,stats_out,bam_index,new_fa_json,raw_fa_bwt,raw_fa_pac,raw_fa_ann,raw_fa_amb,raw_fa_sa,raw_fa_dict,raw_fa_fai]
     for de in del_files:
-        os.remove(de)
+        if os.path.exists(de):
+            os.remove(de)
 
     return result_info
 

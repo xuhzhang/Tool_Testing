@@ -1,0 +1,9 @@
+Type	Var_Type	Interval	Raw	New	Fasta	Multiple	Tool	Tool_POS	Tool_REF	Tool_ALT	Tool_Type	Tool_ratio
+Deletion	3bp	11917-11919	CTT	-	./data/raw_deletion_1_3bp.fa	0.5	GATK	11916	ACTT	A	HaplotypeCaller	0.500
+Deletion	3bp	11917-11919	CTT	-	./data/raw_deletion_1_3bp.fa	0.5	GATK	11916	ACTT	A	Mutect2	0.454
+Deletion	3bp	11917-11919	CTT	-	./data/raw_deletion_1_3bp.fa	0.5	Freebayes	11916	ACTTT	AT	TYPE=del	0.44369063772048845
+Deletion	3bp	11917-11919	CTT	-	./data/raw_deletion_1_3bp.fa	0.5	VarScan	11916	A	*/-CTT	indel	42.82%
+Deletion	3bp	11917-11919	CTT	-	./data/raw_deletion_1_3bp.fa	0.5	lumpy	-	-	-	-	-
+Deletion	3bp	11917-11919	CTT	-	./data/raw_deletion_1_3bp.fa	0.5	Delly	-	-	-	-	-
+Deletion	3bp	11917-11919	CTT	-	./data/raw_deletion_1_3bp.fa	0.5	Gridss	-	-	-	-	-
+Deletion	3bp	11917-11919	CTT	-	./data/raw_deletion_1_3bp.fa	0.5	Pindel	11916	ACTT	SVLEN=-3	SVTYPE=DEL	0.4206241519674355

@@ -64,9 +64,21 @@ def pindel_testing(fa, bam, info_record, *args):
     mes = merge_files(info_record, vcf)
 
     ######### delete files we don't need #########
-    os.remove(bam_config)
-    for del_file in glob.glob("./data/*pindel_*"):
-        os.remove(del_file)
+    ipindel_TD = pindel_preout + "_TD"
+    ipindel_SI = pindel_preout + "_SI"
+    ipindel_RP = pindel_preout + "_RP"
+    ipindel_LI = pindel_preout + "_LI"
+    ipindel_INV = pindel_preout + "_INV"
+    ipindel_D = pindel_preout + "_D"
+    ipindel_Close = pindel_preout + "_CloseEndMapped"
+    ipindel_BP = pindel_preout + "_BP"
+    ipindel_INT = pindel_preout + "_INT_final"
+
+    del_files = [bam_config, ipindel_TD, ipindel_SI, ipindel_RP, ipindel_LI, ipindel_INV, ipindel_D, ipindel_Close, ipindel_BP, ipindel_INT]
+
+    for del_file in del_files:
+        if os.remove(del_file):
+            os.remove(del_file)
 
     return mes
 

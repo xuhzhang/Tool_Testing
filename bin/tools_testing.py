@@ -75,7 +75,7 @@ def call_functions(arguments):
         rep_in_info = ""
         for ti in range(int(repeat_time)):
             rep_info = work_pool.submit(main_replacement, reads_length, rep_multiple_count, rep_single_count, bp, ti, rep_ratio, freq, tools, rep_in_info)
-            sum_info.append(rep_in_info)
+            sum_info.append(rep_info)
 
     work_pool.shutdown(wait=True)
     return sum_info
@@ -90,9 +90,12 @@ def main_function(arguments):
 if __name__ == "__main__":
     usage = """
     Usage:
-        tools_testing.py [-l=150] [-c=100000] [-b=1] [-t=1] [-p=1] [-d=1] [-v=0.2] [--tools=<arg>] [--dup <dup-ration>] [--del <del-ration>] [--ins <ins-ration>] [--inv <inv-ration>] [--rep <rep-ration>]
+        tools_testing.py [-l=150] [-c=100000] [-b=1] [-t=1] [-p=1] [-d=1] [-v=0.2] [--tools=<arg>] [--dup <dup-ration>] [--del <del-ration>] [--ins <ins-ration>] [--inv <inv-ration>] [--rep <rep-ration>] OUTPUT
 
     Testing different tools on different raw-fasta-based variations
+
+    Arguments:
+        OUTPUT                      the result file name
 
     Options:
         -h --help
@@ -114,9 +117,9 @@ if __name__ == "__main__":
     arguments = docopt(usage)
     sum_info = main_function(arguments)
 
-    total_file = "./data/total_info_aggregate.txt"
+    total_file = arguments['OUTPUT']
     title = "Type" + "\t" + "Var_Type" + "\t" + "Interval" + "\t" + "Raw" + "\t" + "New" + "\t" + "Fasta" + "\t" + "Multiple" + "\t" + "Tool" + "\t" + "Tool_POS" + "\t" + "Tool_REF" + "\t" + "Tool_ALT" + "\t" + "Tool_Type" + "\t" + "Tool_ratio" + "\n"
     with open(total_file, 'w') as fw:
         fw.write(title)
-        for info in sum_info:
-            fw.write(info.result())
+        for single_info in sum_info:
+            fw.write(single_info.result())

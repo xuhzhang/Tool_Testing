@@ -29,7 +29,7 @@ def replacement_bp(bp, raw_fasta):
     info = raw_seq(raw_fasta)
 
     ###### write the replaced bases to the new fasta ######
-    new_fasta = "./data/replacement_" + str(bp) + "bp.fasta"
+    new_fasta = "/".join(raw_fasta.split("/")[:-1]) + "/new_" + "_".join(raw_fasta.split("/")[-1].split("_")[1:])
     json_file = ".".join(new_fasta.split(".")[:-1]) + ".json"
 
     ### whether to produce new fasta or not #########
